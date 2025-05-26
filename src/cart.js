@@ -17,30 +17,36 @@ Tips:
 // function clearCart()
 // -------------------------------------------------- //
 
-import { isCartItem, isProduct } from "./validation.js"
+import { isCartItem, isProduct } from "./validation.js";
 
-let cart = []
-let idCounter = 2002
+let cart = [];
+let idCounter = 2002;
 // -------------------------------------------------- //
-
 
 // Din kod börjar här
 // Du får en funktion att börja med
 
-function getCartItemCount() {
-	throw new Error('TODO')
+function clearCart() {
+  cart.length = 0;
+}
+
+function getCartItemCount(items) {
+  if (!isCartItem(items)) {
+    return false;
+  }
+
+  return cart.length;
+  //throw new Error("TODO");
 }
 
 function addToCart(newItem) {
-	if( !isProduct(newItem) ) {
-		return false
-	}
+  if (!isProduct(newItem)) {
+    return false;
+  }
 
-	const cartItem = { id: idCounter, amount: 1, item: newItem }
-	idCounter++
-	cart.push(cartItem)
+  const cartItem = { id: idCounter, amount: 1, item: newItem };
+  idCounter++;
+  cart.push(cartItem);
 }
 
-
-
-export { getCartItemCount, addToCart }
+export { getCartItemCount, addToCart, clearCart };
