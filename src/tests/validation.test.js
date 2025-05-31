@@ -1,5 +1,5 @@
 import { isCartItem, isProduct } from "../validation.js";
-// Examples of a valid product and a valid cart item. You may use these when testing below.
+
 const exampleProduct = {
   id: 1001,
   name: "Badanka",
@@ -12,42 +12,111 @@ const exampleCartObject = {
   item: exampleProduct,
 };
 
-// Group tests using "describe"
 describe("Validation", () => {
-  // Använd en "test" eller "it" (de är synonymer) för varje testfall
-  /* Exempel på syntax:
-	test('beskriv testfallet', () => {
-		// här skriver du testkoden
-		// avsluta alltid med "expect"
-	})
-	*/
+  describe("isProduct", () => {
+    test("it  returns true for valid product", () => {
+      expect(isProduct(exampleProduct)).toBe(true);
+    });
 
-  test("isProduct returnerar true för en giltig produkt", () => {
-    const produkt = { id: 1, name: "Anka", price: 100 };
-    expect(isProduct(produkt)).toBe(true);
+    test("returnerar false om negativt nummer i pris", () => {
+      const invalidProduct = { ...exampleProduct, price: -12 };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false om price är noll", () => {
+      const invalidProduct = { ...exampleProduct, price: 0 };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false om price är string", () => {
+      const invalidProduct = { ...exampleProduct, price: "fläskfärs" };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false om price är null", () => {
+      const invalidProduct = { ...exampleProduct, price: null };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false med tomt id", () => {
+      const invalidProduct = { ...exampleProduct };
+      delete invalidProduct.id;
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false för id i fel datatyp string", () => {
+      const invalidProduct = { ...exampleProduct, id: "1001" };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false för id null", () => {
+      const invalidProduct = { ...exampleProduct, id: null };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false pga avsaknad av namn", () => {
+      const invalidProduct = { ...exampleProduct };
+      delete invalidProduct.name;
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false för tom sträng", () => {
+      const invalidProduct = { ...exampleProduct, name: "" };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false för att namnet är null", () => {
+      const invalidProduct = { ...exampleProduct, name: null };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
+
+    test("returnerar false för fel produkt med fel datatyp", () => {
+      const invalidProduct = { id: 1001, name: "produkt" };
+      expect(isProduct(invalidProduct)).toBe(false);
+    });
   });
 
-  test("isCartItem returnerar true för en giltlig produkt", () => {
-    const product = { id: 2, name: "David", price: 999 };
-    expect(isCartItem(product)).toBe(true);
+  describe("isCartItem", () => {
+    test("returns true for a valid cart item", () => {
+      expect(isCartItem(exampleCartObject)).toBe(true);
+    });
+
+    test("returnerar false om det är -1 i cartItem", () => {
+      const invalidCartItem = { ...exampleCartObject, amount: -1 };
+      expect(isCartItem(invalidCartItem)).toBe(false);
+    });
+
+    test("returnerar false för om cartItem är noll", () => {
+      const invalidCartItem = { ...exampleCartObject, amount: 0 };
+      expect(isCartItem(invalidCartItem)).toBe(false);
+    });
+
+    test("returnerar false för fel item där amount är en sträng istället för number", () => {
+      const invalidCartItem = { ...exampleCartObject, amount: "banan" };
+      expect(isCartItem(invalidCartItem)).toBe(false);
+    });
+
+    //saknas id
+    test("returns false for invalid cart item with invalid id", () => {
+      const invalidCartItem = { ...exampleCartObject };
+      delete invalidCartItem.id;
+      expect(isCartItem(invalidCartItem)).toBe(false);
+    });
+
+    test("returnerar false för fel item i cartitem", () => {
+      const invalidCartItem = { ...exampleCartObject, item: "Senap" };
+      expect(isCartItem(invalidCartItem)).toBe(false);
+    });
+
+    test("returnerar false om cartItem har ett sträng id", () => {
+      const invalidCartItem = { ...exampleCartObject, id: "2078" };
+      expect(isCartItem(invalidCartItem)).toBe(false);
+    });
+
+    test("returnerar false för cartitem om det saknas produkt i produkt fältet", () => {
+      const invalidProduct = { id: 1001, name: "Product" };
+      const invalidCartItem = { ...exampleCartObject, item: invalidProduct };
+      expect(isCartItem(invalidCartItem)).toBe(false);
+    });
   });
-
-  test("isCartItem returnerar om joi kraven möts", () => {
-    const product = { id: "tre", name: "Joi", price: 200 };
-    expect(isCartItem(product)).toBe(false);
-  });
-  test("isProduct returnerar om joi kraven möts", () => {
-    const product = { id: "fyra", name: "fyra", price: 4 };
-    expect(isProduct(product)).toBe(false);
-  });
-
-  // ---------------------------------------------
-  // Följande testfall ska du implementera. Det är tillåtet att använda Joi. Gör i så fall ett schema för varje sorts objekt du vill kunna validera. Du får även ändra texten och du t.ex. vill skriva på svenska i stället för engelska.
-  // (Ta bort dessa kommentarer när du är klar)
-
-  // 1. it returns true for a valid cart object
-  // 2. it returns false for invalid cart objects
-
-  // 3. it returns true for a valid product
-  // 4. it returns false for invalid cart objects
 });
