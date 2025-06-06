@@ -44,8 +44,8 @@ describe("Cart", () => {
       const cartItem = getItem(0);
 
       expect(cartItem.item).toEqual(product);
-      expect(cartItem.amount).toBe(1); // Default amount is 1
-      expect(typeof cartItem.id).toBe("number"); // Ensure id is a number
+      expect(cartItem.amount).toBe(1);
+      expect(typeof cartItem.id).toBe("number");
     });
 
     test("getItem returnerar null för minus index", () => {
