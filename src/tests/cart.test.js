@@ -73,12 +73,12 @@ describe("Cart", () => {
       expect(getTotalCartValue()).toBe(0);
     });
 
-    test("getTotalCartValue returnerar rätt antal för en produkt", () => {
+    test("getTotalCartValue returnerar rätt värde för en produkt", () => {
       addToCart({ id: 1006, name: "Snusnäsduk", price: 20 });
       expect(getTotalCartValue()).toBe(20);
     });
 
-    test("getTotalCartValue returnerar rätt antal för flera produkter", () => {
+    test("getTotalCartValue returnerar rätt värde för flera produkter", () => {
       addToCart({ id: 1007, name: "Ost", price: 30 });
       addToCart({ id: 1008, name: "Tomat", price: 50 });
 
